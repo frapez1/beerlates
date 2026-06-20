@@ -12,7 +12,7 @@ const STEPS = [
   {
     num: "01",
     title: "Gather Your Crew",
-    body: "Corporate team, birthday squad, hen party, random Friday — any group of 8 to 50 is welcome. We come to your venue, or help you find one.",
+    body: "Corporate team, birthday squad, hen party, random Friday — any group of 4 to 50 is welcome. We come to your venue, or help you find one.",
   },
   {
     num: "02",
@@ -74,6 +74,23 @@ const FAQS = [
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+
+  async function handleEnquiry(e: React.SyntheticEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setFormStatus("submitting");
+    const res = await fetch("https://formspree.io/f/xeewynwq", {
+      method: "POST",
+      body: new FormData(e.currentTarget),
+      headers: { Accept: "application/json" },
+    });
+    if (res.ok) {
+      setFormStatus("success");
+      e.currentTarget.reset();
+    } else {
+      setFormStatus("error");
+    }
+  }
 
   return (
     <div className="bg-background text-foreground overflow-x-hidden" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -161,7 +178,7 @@ export default function App() {
               <span style={{ opacity: 0.35 }}>REPEAT</span>
             </h1>
             <p className="text-primary-foreground/65 text-lg leading-relaxed max-w-md mb-10">
-              Low impact. Good company. Your instructor guides you through playful pilates moves — using your drink as a prop. No fitness required. Just show up and breathe.
+              Low impact. Good company. Your instructor guides you through playful pilates moves — using your drink as a prop. No fitness required. Just show up and sip.
             </p>
             <div className="flex flex-wrap gap-4">
               <a
@@ -206,7 +223,7 @@ export default function App() {
           <div className="flex gap-0 whitespace-nowrap" style={{ animation: "ticker 25s linear infinite" }}>
             {Array(8).fill(null).map((_, i) => (
               <span key={i} className="text-accent-foreground font-black text-xs tracking-widest pr-12">
-                  CORPORATE EVENTS &nbsp;·&nbsp; PRIVATE PARTIES &nbsp;·&nbsp; BYO DRINKS &nbsp;·&nbsp; ALL FITNESS LEVELS &nbsp;·&nbsp; MOBILE SESSIONS &nbsp;·&nbsp; GROUPS 8–50 &nbsp;·&nbsp;
+                  🏢 CORPORATE EVENTS &nbsp;·&nbsp; 🎉 PRIVATE PARTIES &nbsp;·&nbsp; 🍻 BYO DRINKS &nbsp;·&nbsp; 🧘 ALL FITNESS LEVELS &nbsp;·&nbsp; 🚐 MOBILE SESSIONS &nbsp;·&nbsp; 👥 GROUPS 4–50 
               </span>
             ))}
           </div>
@@ -384,7 +401,7 @@ export default function App() {
             </p>
             <ul className="space-y-3 mb-10">
               {[
-                "Groups from 8 people",
+                "Groups from 4 people",
                 "Flexible venues: garden, studio, pub function room",
                 "Themed session options available",
                 "Great photos guaranteed",
@@ -499,11 +516,11 @@ export default function App() {
               <span className="text-accent">YOURS</span>
             </h2>
             <p className="text-primary-foreground/60 text-lg leading-relaxed max-w-md mb-10">
-              Fill in the form and we&apos;ll come back to you within 24 hours with availability and a tailored quote. Groups of 8 to 50+ welcome.
+              Fill in the form and we&apos;ll come back to you within 24 hours with availability and a tailored quote. Groups of 4 to 50+ welcome.
             </p>
             <div className="space-y-3">
               {[
-                "Minimum 8 people",
+                "Minimum 4 people",
                 "We come to your venue",
                 "Weekday & weekend slots available",
                 "Corporate invoicing available",
@@ -517,80 +534,107 @@ export default function App() {
           </div>
 
           {/* Form */}
-          <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-            <div className="grid grid-cols-2 gap-4">
+          {formStatus === "success" ? (
+            <div className="flex flex-col items-start justify-center gap-4 py-12">
+              <div className="text-accent font-black text-xs tracking-widest">ENQUIRY SENT</div>
+              <p className="text-primary-foreground/70 text-lg leading-relaxed">
+                Thanks! We&apos;ll come back to you within 24 hours with availability and a quote.
+              </p>
+              <button
+                onClick={() => setFormStatus("idle")}
+                className="text-xs font-black tracking-widest text-primary-foreground/40 hover:text-primary-foreground transition-colors underline underline-offset-4"
+              >
+                Send another enquiry
+              </button>
+            </div>
+          ) : (
+            <form className="space-y-4" onSubmit={handleEnquiry}>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs font-black tracking-widest text-primary-foreground/45 block mb-2">
+                    FIRST NAME
+                  </label>
+                  <input
+                    type="text"
+                    name="first_name"
+                    placeholder="Alex"
+                    required
+                    className="w-full bg-primary-foreground/8 border border-primary-foreground/20 text-primary-foreground px-4 py-3 focus:outline-none focus:border-accent transition-colors placeholder:text-primary-foreground/25"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-black tracking-widest text-primary-foreground/45 block mb-2">
+                    LAST NAME
+                  </label>
+                  <input
+                    type="text"
+                    name="last_name"
+                    placeholder="Smith"
+                    className="w-full bg-primary-foreground/8 border border-primary-foreground/20 text-primary-foreground px-4 py-3 focus:outline-none focus:border-accent transition-colors placeholder:text-primary-foreground/25"
+                  />
+                </div>
+              </div>
               <div>
                 <label className="text-xs font-black tracking-widest text-primary-foreground/45 block mb-2">
-                  FIRST NAME
+                  EMAIL
                 </label>
                 <input
-                  type="text"
-                  placeholder="Alex"
+                  type="email"
+                  name="email"
+                  placeholder="alex@company.com"
+                  required
                   className="w-full bg-primary-foreground/8 border border-primary-foreground/20 text-primary-foreground px-4 py-3 focus:outline-none focus:border-accent transition-colors placeholder:text-primary-foreground/25"
                 />
               </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs font-black tracking-widest text-primary-foreground/45 block mb-2">
+                    EVENT TYPE
+                  </label>
+                  <select name="event_type" className="w-full bg-primary border border-primary-foreground/20 text-primary-foreground px-4 py-3 focus:outline-none focus:border-accent transition-colors">
+                    <option value="">Select type</option>
+                    <option value="corporate">Corporate</option>
+                    <option value="private">Private</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-xs font-black tracking-widest text-primary-foreground/45 block mb-2">
+                    GROUP SIZE
+                  </label>
+                  <select name="group_size" className="w-full bg-primary border border-primary-foreground/20 text-primary-foreground px-4 py-3 focus:outline-none focus:border-accent transition-colors">
+                    <option value="">Select size</option>
+                    <option value="8-15">8–15 people</option>
+                    <option value="16-30">16–30 people</option>
+                    <option value="31-50">31–50 people</option>
+                    <option value="50+">50+ people</option>
+                  </select>
+                </div>
+              </div>
               <div>
                 <label className="text-xs font-black tracking-widest text-primary-foreground/45 block mb-2">
-                  LAST NAME
+                  MESSAGE
                 </label>
-                <input
-                  type="text"
-                  placeholder="Smith"
-                  className="w-full bg-primary-foreground/8 border border-primary-foreground/20 text-primary-foreground px-4 py-3 focus:outline-none focus:border-accent transition-colors placeholder:text-primary-foreground/25"
+                <textarea
+                  rows={4}
+                  name="message"
+                  placeholder="Tell us about your event, preferred dates, venue ideas..."
+                  className="w-full bg-primary-foreground/8 border border-primary-foreground/20 text-primary-foreground px-4 py-3 focus:outline-none focus:border-accent transition-colors resize-none placeholder:text-primary-foreground/25"
                 />
               </div>
-            </div>
-            <div>
-              <label className="text-xs font-black tracking-widest text-primary-foreground/45 block mb-2">
-                EMAIL
-              </label>
-              <input
-                type="email"
-                placeholder="alex@company.com"
-                className="w-full bg-primary-foreground/8 border border-primary-foreground/20 text-primary-foreground px-4 py-3 focus:outline-none focus:border-accent transition-colors placeholder:text-primary-foreground/25"
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="text-xs font-black tracking-widest text-primary-foreground/45 block mb-2">
-                  EVENT TYPE
-                </label>
-                <select className="w-full bg-primary border border-primary-foreground/20 text-primary-foreground px-4 py-3 focus:outline-none focus:border-accent transition-colors">
-                  <option value="">Select type</option>
-                  <option value="corporate">Corporate</option>
-                  <option value="private">Private</option>
-                </select>
-              </div>
-              <div>
-                <label className="text-xs font-black tracking-widest text-primary-foreground/45 block mb-2">
-                  GROUP SIZE
-                </label>
-                <select className="w-full bg-primary border border-primary-foreground/20 text-primary-foreground px-4 py-3 focus:outline-none focus:border-accent transition-colors">
-                  <option value="">Select size</option>
-                  <option value="8-15">8–15 people</option>
-                  <option value="16-30">16–30 people</option>
-                  <option value="31-50">31–50 people</option>
-                  <option value="50+">50+ people</option>
-                </select>
-              </div>
-            </div>
-            <div>
-              <label className="text-xs font-black tracking-widest text-primary-foreground/45 block mb-2">
-                MESSAGE
-              </label>
-              <textarea
-                rows={4}
-                placeholder="Tell us about your event, preferred dates, venue ideas..."
-                className="w-full bg-primary-foreground/8 border border-primary-foreground/20 text-primary-foreground px-4 py-3 focus:outline-none focus:border-accent transition-colors resize-none placeholder:text-primary-foreground/25"
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-accent text-accent-foreground py-4 text-xs font-black tracking-widest hover:bg-accent/85 transition-colors flex items-center justify-center gap-2"
-            >
-              SEND ENQUIRY <ArrowRight size={15} />
-            </button>
-          </form>
+              {formStatus === "error" && (
+                <p className="text-red-400 text-xs font-black tracking-widest">
+                  Something went wrong — please try again or email us directly.
+                </p>
+              )}
+              <button
+                type="submit"
+                disabled={formStatus === "submitting"}
+                className="w-full bg-accent text-accent-foreground py-4 text-xs font-black tracking-widest hover:bg-accent/85 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {formStatus === "submitting" ? "SENDING…" : <> SEND ENQUIRY <ArrowRight size={15} /> </>}
+              </button>
+            </form>
+          )}
         </div>
       </section>
 
@@ -616,7 +660,7 @@ export default function App() {
               Book
             </a>
           </div>
-          <div className="text-xs text-background/30">© 2025 Beerlates. All rights reserved.</div>
+          <div className="text-xs text-background/30">© 2026 Beerlates. All rights reserved.</div>
         </div>
       </footer>
 
