@@ -423,7 +423,7 @@ export default function App() {
       </section>
 
       {/* ── TESTIMONIALS ── */}
-      <section className="bg-card py-24 px-6">
+      {/* <section className="bg-card py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="text-xs font-black tracking-widest text-muted-foreground mb-5">REAL PEOPLE. REAL LAUGHS.</div>
           <h2
@@ -455,7 +455,7 @@ export default function App() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ── FAQ ── */}
       <section className="bg-background py-24 px-6" id="faq">
