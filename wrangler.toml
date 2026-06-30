@@ -1,5 +1,7 @@
 name = 'beerlates'
-pages_build_output_dir = "dist"
+
+[assets]
+directory = "./dist"
 
 [[kv_namespaces]]
 binding = "QR_COUNTER"
