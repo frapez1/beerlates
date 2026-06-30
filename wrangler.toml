@@ -1,4 +1,4 @@
-name = "beerlates-website"
+name = 'beerlates'
 pages_build_output_dir = "dist"
 
 [[kv_namespaces]]
