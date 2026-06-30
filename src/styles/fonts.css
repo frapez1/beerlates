@@ -1,1 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap');
+/* Barlow Condensed — weights used: 700, 800, 900 */
+@import '@fontsource/barlow-condensed/700.css';
+@import '@fontsource/barlow-condensed/800.css';
+@import '@fontsource/barlow-condensed/900.css';
+
+/* DM Sans — weights used: 400, 500, 600 */
+@import '@fontsource/dm-sans/400.css';
+@import '@fontsource/dm-sans/500.css';
+@import '@fontsource/dm-sans/600.css';

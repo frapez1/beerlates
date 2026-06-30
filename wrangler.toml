@@ -1,0 +1,6 @@
+name = "beerlates-website"
+pages_build_output_dir = "dist"
+
+[[kv_namespaces]]
+binding = "QR_COUNTER"
+id = "591d211fec804efe91b2156960c28dd5"

@@ -1,12 +1,7 @@
 import { useState } from "react";
-import { Menu, X, ArrowRight, Star, ChevronDown, Heart, Clock, Smile, Users } from "lucide-react";
-
-const NAV_LINKS = [
-  { label: "About", href: "#about" },
-  { label: "Events", href: "#events" },
-  { label: "How It Works", href: "#how-it-works" },
-  { label: "FAQ", href: "#faq" },
-];
+import { ArrowRight, ChevronDown, Heart, Clock, Smile } from "lucide-react";
+import SiteNav from "./components/SiteNav";
+import SiteFooter from "./components/SiteFooter";
 
 const STEPS = [
   {
@@ -72,7 +67,6 @@ const FAQS = [
 ];
 
 export default function App() {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
 
@@ -95,63 +89,7 @@ export default function App() {
   return (
     <div className="bg-background text-foreground overflow-x-hidden" style={{ fontFamily: "'DM Sans', sans-serif" }}>
 
-      {/* ── NAV ── */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-primary text-primary-foreground">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <a href="#" className="flex items-baseline gap-0" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
-            <span className="text-2xl font-black tracking-tight text-accent">BEER</span>
-            <span className="text-2xl font-black tracking-tight text-primary-foreground/80">LATES</span>
-          </a>
-
-          <div className="hidden md:flex items-center gap-8">
-            {NAV_LINKS.map((l) => (
-              <a
-                key={l.label}
-                href={l.href}
-                className="text-sm font-medium text-primary-foreground/60 hover:text-primary-foreground transition-colors"
-              >
-                {l.label}
-              </a>
-            ))}
-            <a
-              href="#book"
-              className="bg-accent text-accent-foreground px-5 py-2 text-xs font-black tracking-widest hover:bg-accent/85 transition-colors"
-            >
-              BOOK NOW
-            </a>
-          </div>
-
-          <button
-            className="md:hidden text-primary-foreground"
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Toggle menu"
-          >
-            {menuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-
-        {menuOpen && (
-          <div className="md:hidden bg-primary border-t border-primary-foreground/10 px-6 pb-6 flex flex-col gap-5 pt-4">
-            {NAV_LINKS.map((l) => (
-              <a
-                key={l.label}
-                href={l.href}
-                className="text-sm font-medium text-primary-foreground/70"
-                onClick={() => setMenuOpen(false)}
-              >
-                {l.label}
-              </a>
-            ))}
-            <a
-              href="#book"
-              className="bg-accent text-accent-foreground px-5 py-3 text-xs font-black tracking-widest text-center"
-              onClick={() => setMenuOpen(false)}
-            >
-              BOOK NOW
-            </a>
-          </div>
-        )}
-      </nav>
+      <SiteNav />
 
       {/* ── HERO ── */}
       <section className="relative bg-primary pt-16 min-h-screen flex flex-col" id="about">
@@ -201,7 +139,7 @@ export default function App() {
             <div className="absolute -top-5 -left-5 w-full h-full bg-accent/15" />
             <div className="relative bg-primary/50 overflow-hidden">
               <img
-                src="https://images.unsplash.com/photo-1731325632687-51e90609e700?w=700&h=560&fit=crop&auto=format"
+                src="/images/beer-1.jpg"
                 alt="Group of people doing pilates together and having a great time"
                 className="w-full h-[400px] md:h-[520px] object-cover"
               />
@@ -236,7 +174,7 @@ export default function App() {
           {/* Image */}
           <div className="relative">
             <img
-              src="https://images.unsplash.com/photo-1436076863939-06870fe779c2?w=620&h=720&fit=crop&auto=format"
+              src="/images/beer-2.jpg"
               alt="Person holding beer bottles at golden hour"
               className="w-full h-[480px] md:h-[560px] object-cover"
             />
@@ -368,7 +306,7 @@ export default function App() {
           </div>
           <div className="relative min-h-[380px] md:min-h-0 bg-primary/50">
             <img
-              src="https://images.unsplash.com/photo-1758520144658-c87be518b87e?w=800&h=700&fit=crop&auto=format"
+              src="/images/beer-3.jpg"
               alt="People in party hats celebrating in an office event"
               className="absolute inset-0 w-full h-full object-cover"
             />
@@ -379,7 +317,7 @@ export default function App() {
         <div className="grid md:grid-cols-2 bg-accent text-accent-foreground">
           <div className="relative min-h-[380px] md:min-h-0 bg-muted">
             <img
-              src="https://images.unsplash.com/photo-1725543229267-8cfcb580ed07?w=800&h=700&fit=crop&auto=format"
+              src="/images/beer-4.jpg"
               alt="Two people cheersing beer bottles by a window"
               className="absolute inset-0 w-full h-full object-cover"
             />
@@ -638,31 +576,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* ── FOOTER ── */}
-      <footer className="bg-foreground text-background py-12 px-6">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-          <div>
-            <div
-              className="tracking-tight mb-1"
-              style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "2rem", fontWeight: 900 }}
-            >
-              BEERLATES
-            </div>
-            <div className="text-background/40 text-xs font-medium">Balance · Breath · Beer · Repeat</div>
-          </div>
-          <div className="flex flex-wrap gap-6 text-sm text-background/50">
-            {NAV_LINKS.map((l) => (
-              <a key={l.label} href={l.href} className="hover:text-background transition-colors">
-                {l.label}
-              </a>
-            ))}
-            <a href="#book" className="hover:text-background transition-colors">
-              Book
-            </a>
-          </div>
-          <div className="text-xs text-background/30">© 2026 Beerlates. All rights reserved.</div>
-        </div>
-      </footer>
+      <SiteFooter />
 
       <style>{`
         @keyframes ticker {
